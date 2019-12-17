@@ -4,25 +4,31 @@ hdfs dfs -ls /tmp
 
 [Page 11, 12]
 # Put local data into hdfs
-hdfs dfs -put data/songs.csv  /tmp
+hdfs dfs -put data/songs.csv /tmp
+
 
 [Page 13]
 hdfs dfs -ls /tmp
 
 
 [Page 22]
+# Login into beeline session
 beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive
 
 
-[Page 24] Beeline interactive
-beeline>>> !connect  jdbc:hive2://quickstart:10000
+[Page 24]
+# Beeline interactive
+beeline>>> !connect jdbc:hive2://quickstart:10000
 beeline>>> !exit
 beeline>>> !help
 beeline>>> !verbose
 
 
 [Page 25]
+# Execute commands in sql file
 beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive -f show_db.hql
+
+# Execute commands in CLI
 beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive -e "show databases;"
 beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive -e "show databases;" --silent
 
@@ -30,13 +36,13 @@ beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive -e "show databases;" --
 [Page 30]
 -- Create schema
 CREATE TABLE SONGS_<your_name> (
-song_id	STRING,
-song_length BIGINT,
-genre_ids STRING,
-artist_name STRING,
-composer STRING,
-lyricist STRING,
-language STRING
+  song_id STRING,
+  song_length BIGINT,
+  genre_ids STRING,
+  artist_name STRING,
+  composer STRING,
+  lyricist STRING,
+  language STRING
 )
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
@@ -45,50 +51,66 @@ STORED AS TEXTFILE;
 
 [Page 31]
 hdfs dfs -put /data/songs.csv /tmp/songs_<your_name>.csv
+
+# Loading Data from HDFS Files
 LOAD DATA INPATH '/tmp/songs_<your_name>.csv' INTO TABLE SONGS_<your_name>;
 
+-- Truncate table
 TRUNCATE TABLE SONGS_<your_name>;
 SELECT COUNT(*) FROM SONGS_<your_name>;
+
+# Put data to hive table path directly (not recommended)
 hdfs dfs -put /data/songs.csv /user/hive/warehouse/songs_<your_name>
 
 
 [Page 33]
+# Make a directory of your name in HDFS
+hdfs dfs -mkdir /tmp/<your_name>
+
+# Put your file into the folder
+hdfs dfs -put /data/songs.csv /tmp/<your_name>/songs.csv
+
+# Create table with your new path
 CREATE TABLE SONGS_loc_<your_name> (
-song_id	STRING,
-song_length BIGINT,
-genre_ids STRING,
-artist_name STRING,
-composer STRING,
-lyricist STRING,
-language STRING
+  song_id STRING,
+  song_length BIGINT,
+  genre_ids STRING,
+  artist_name STRING,
+  composer STRING,
+  lyricist STRING,
+  language STRING
 )
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
 STORED AS TEXTFILE
-LOCATION "/tmp/<your_name>/songs"
+LOCATION "/tmp/<your_name>/songs";
 
 
 [Page 34]
-create table SONGS_archived_<your_name> like SONGS_<your_name>;
+-- Create a table schema from existing table (new table will contain no data)
+CREATE TABLE SONGS_archived_<your_name>
+like SONGS_<your_name>;
 
 
 [Page 35]
+-- Create a table from a select query
 CREATE TABLE SONGS_select_<your_name> AS
 SELECT
-song_id,
-composer
-FROM SONGS_<your_name>
+  song_id,
+  composer
+FROM SONGS_<your_name>;
 
 
 [Page 36]
+-- Create an external table
 CREATE EXTERNAL TABLE SONGS_external_<your_name> (
-song_id	STRING,
-song_length BIGINT,
-genre_ids STRING,
-artist_name STRING,
-composer STRING,
-lyricist STRING,
-language STRING
+  song_id STRING,
+  song_length BIGINT,
+  genre_ids STRING,
+  artist_name STRING,
+  composer STRING,
+  lyricist STRING,
+  language STRING
 )
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
@@ -97,11 +119,16 @@ LOCATION "/tmp/<your_name>/songs";
 
 
 [Page 37]
+# Drop an external table
+
+# Put data to table path
 hdfs dfs -put /data/songs.csv /tmp/<your_name>/songs
 
+-- Check to see whether the table contains the data we just put
 SELECT * FROM SONGS_external_<your_name> LIMIT 10;
 DROP TABLE SONGS_external_<your_name>;
 
+# Check HDFS again to see if the data still exists
 hdfs dfs -ls /tmp/songs.csv /tmp/<your_name>/songs
 
 
@@ -114,15 +141,28 @@ song_id  string
 name  string
 isrc  string
 
+hdfs dfs -put /data/song_extra_info.csv /tmp/song_info_<your_name>.csv
+
+CREATE TABLE SONG_INFO_<your_name> (
+  song_id STRING,
+  name STRING,
+  isrc STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+LOAD DATA INPATH '/tmp/song_info_<your_name>.csv' INTO TABLE SONG_INFO_<your_name>;
+
 
 [Page 41]
-CREATE TABLE SONGS_p_<your_name> (
-song_id	STRING,
-song_length BIGINT,
-artist_name STRING,
-composer STRING,
-lyricist STRING,
-language STRING
+CREATE TABLE SONGS_P_<your_name> (
+  song_id STRING,
+  song_length BIGINT,
+  artist_name STRING,
+  composer STRING,
+  lyricist STRING,
+  language STRING
 )
 PARTITIONED BY (genre_ids STRING)
 ROW FORMAT DELIMITED
@@ -131,38 +171,55 @@ STORED AS TEXTFILE;
 
 
 [Page 42]
+CREATE TABLE SONGS_<your_name> (
+  song_id STRING,
+  song_length BIGINT,
+  genre_ids STRING,
+  artist_name STRING,
+  composer STRING,
+  lyricist STRING,
+  language STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+-- INSERT AS SELECT
 set hive.exec.dynamic.partition.mode=nonstrict;
-INSERT INTO SONGS_p_<your_name>
-PARTITION(genre_ids)
-SELECT
-song_id,
-song_length,
-artist_name,
-composer,
-lyricist,
-language,
-genre_ids
+INSERT INTO SONGS_P_<your_name>
+  PARTITION(genre_ids)
+  SELECT
+  song_id,
+  song_length,
+  artist_name,
+  composer,
+  lyricist,
+  language,
+  genre_ids
 FROM SONGS_<your_name>;
 
 
 [Page 46]
-SELECT * FROM songs_p_<your_name>
+-- Select partitioned table
+SELECT * FROM SONGS_P_<your_name>
 WHERE genre_ids='109';
 
 
 [Page 47]
+-- Drop partition (genre_id 109 will be deleted)
 ALTER TABLE songs_p_<your_name> DROP PARTITION (genre_ids='109');
 
 
 [Page 51]
+-- Create Bucket table
 CREATE TABLE SONGS_b_<your_name> (
-song_id	STRING,
-song_length BIGINT,
-genre_id STRING,
-artist_name STRING,
-composer STRING,
-lyricist STRING,
-language STRING
+  song_id STRING,
+  song_length BIGINT,
+  genre_id STRING,
+  artist_name STRING,
+  composer STRING,
+  lyricist STRING,
+  language STRING
 )
 CLUSTERED BY (song_id) INTO 4 BUCKETS
 ROW FORMAT DELIMITED
@@ -173,60 +230,60 @@ STORED AS TEXTFILE;
 [Page 52]
 set hive.enforce.bucketing=true;
 
-INSERT INTO TABLE SONGS_b_<your_name>
-SELECT
-song_id,
-song_length,
-genre_ids,
-artist_name,
-composer,
-lyricist,
-language
+INSERT INTO TABLE SONGS_B_<your_name>
+  SELECT
+  song_id,
+  song_length,
+  genre_ids,
+  artist_name,
+  composer,
+  lyricist,
+  language
 FROM SONGS_<your_name>;
 
 
 [Page 55]
-CREATE TABLE SONGS_pb_<your_name> (
-song_id	STRING,
-song_length BIGINT,
-artist_name STRING,
-composer STRING,
-lyricist STRING,
-language STRING
+CREATE TABLE SONGS_PB_<your_name> (
+  song_id STRING,
+  song_length BIGINT,
+  artist_name STRING,
+  composer STRING,
+  lyricist STRING,
+  language STRING
 )
 PARTITIONED BY (genre_ids STRING)
 CLUSTERED BY (song_id) INTO 4 BUCKETS
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
-STORED AS TEXTFILE
+STORED AS TEXTFILE;
 
 
 [Page 56]
 set hive.exec.dynamic.partition.mode=nonstrict;
 set hive.enforce.bucketing=true;
 
-INSERT INTO SONGS_pb_<your_name>
-PARTITION (genre_ids)
-SELECT
-song_id,
-song_length,
-artist_name,
-composer,
-lyricist,
-language,
-genre_ids
+INSERT INTO SONGS_PB_<your_name>
+  PARTITION (genre_ids)
+  SELECT
+  song_id,
+  song_length,
+  artist_name,
+  composer,
+  lyricist,
+  language,
+  genre_ids
 FROM SONGS_<your_name>;
 
 
 [Page 64]
 CREATE TABLE SONGS_parquet_<your_name> (
-song_id	STRING,
-song_length BIGINT,
-genre_ids STRING,
-artist_name STRING,
-composer STRING,
-lyricist STRING,
-language STRING
+  song_id STRING,
+  song_length BIGINT,
+  genre_ids STRING,
+  artist_name STRING,
+  composer STRING,
+  lyricist STRING,
+  language STRING
 )
 STORED AS PARQUET;
 
@@ -258,9 +315,9 @@ REFRESH table_name PARTITION partition_name;
 [Page 90]
 EXPLAIN
 SELECT *
-FROM songs_<your_name> A
-JOIN songs_info_<your_name> B
-ON A.song_id=B.song_id
+FROM SONGS_<your_name> A
+JOIN SONGS_INFO_<your_name> B
+ON A.song_id=B.song_id;
 
 
 [Page 92]
