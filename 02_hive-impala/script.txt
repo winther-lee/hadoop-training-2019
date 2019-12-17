@@ -1,32 +1,32 @@
-[Page 9]
+[Page 10]
 hdfs dfs -ls /tmp
 
 
-[Page 10, 11]
+[Page 11, 12]
 hdfs dfs -put data/songs.csv  /tmp 
 
-[Page 12]
+[Page 13]
 hdfs dfs -ls /tmp 
 
 
-[Page 21]
+[Page 22]
 beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive
 
 
-[Page 23]
+[Page 24] Beeline interactive
 beeline>>> !connect  jdbc:hive2://quickstart:10000
 beeline>>> !exit
 beeline>>> !help
 beeline>>> !verbose
 
 
-[Page 24]
+[Page 25]
 beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive -f show_db.hql
 beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive -e "show databases;"
 beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive -e "show databases;" --silent
 
 
-[Page 29]
+[Page 30]
 CREATE TABLE SONGS_<your_name> (
 song_id	STRING,
 song_length BIGINT,
@@ -41,7 +41,7 @@ FIELDS TERMINATED BY ','
 STORED AS TEXTFILE;
 
 
-[Page 30]
+[Page 31]
 hdfs dfs -put /data/songs.csv /tmp/songs_<your_name>.csv
 LOAD DATA INPATH '/tmp/songs_<your_name>.csv' INTO TABLE SONGS_<your_name>;
 
@@ -50,7 +50,7 @@ SELECT COUNT(*) FROM SONGS_<your_name>;
 hdfs dfs -put /data/songs.csv /user/hive/warehouse/songs_<your_name>
 
 
-[Page 32]
+[Page 33]
 CREATE TABLE SONGS_loc_<your_name> (
 song_id	STRING,
 song_length BIGINT,
@@ -66,11 +66,11 @@ STORED AS TEXTFILE
 LOCATION "/tmp/<your_name>/songs"
 
 
-[Page 33]
+[Page 34]
 create table SONGS_archived_<your_name> like SONGS_<your_name>;
 
 
-[Page 34]
+[Page 35]
 CREATE TABLE SONGS_select_<your_name> AS
 SELECT 
 song_id, 
@@ -78,7 +78,7 @@ composer
 FROM SONGS_<your_name>
 
 
-[Page 35]
+[Page 36]
 CREATE EXTERNAL TABLE SONGS_external_<your_name> (
 song_id	STRING,
 song_length BIGINT,
@@ -94,24 +94,26 @@ STORED AS TEXTFILE
 LOCATION "/tmp/<your_name>/songs";
 
 
-[Page 36]
+[Page 37]
 hdfs dfs -put /data/songs.csv /tmp/<your_name>/songs
+
 SELECT * FROM SONGS_external_<your_name> LIMIT 10;
 DROP TABLE SONGS_external_<your_name>;
+
 hdfs dfs -ls /tmp/songs.csv /tmp/<your_name>/songs
 
 
-[Page 37]
-Local file system
+[Page 38] Challenge
+# Local file system
 /data/song_info.csv
 
-Header and types
+# Header and types
 song_id  string
 name  string
 isrc  string
 
 
-[Page 40]
+[Page 41]
 CREATE TABLE SONGS_p_<your_name> (
 song_id	STRING,
 song_length BIGINT,
@@ -141,16 +143,16 @@ genre_ids
 FROM SONGS_<your_name>;
 
 
-[Page 45]
+[Page 46]
 SELECT * FROM songs_p_<your_name>
 WHERE genre_ids='109';
 
 
-[Page 46]
+[Page 47]
 ALTER TABLE songs_p_<your_name> DROP PARTITION (genre_ids='109');
 
 
-[Page 50]
+[Page 51]
 CREATE TABLE SONGS_b_<your_name> (
 song_id	STRING,
 song_length BIGINT,
@@ -166,7 +168,7 @@ FIELDS TERMINATED BY ','
 STORED AS TEXTFILE;
 
 
-[Page 51]
+[Page 52]
 set hive.enforce.bucketing=true;
 
 INSERT INTO TABLE SONGS_b_<your_name>
@@ -181,7 +183,7 @@ language
 FROM SONGS_<your_name>;
 
 
-[Page 54]
+[Page 55]
 CREATE TABLE SONGS_pb_<your_name> (
 song_id	STRING,
 song_length BIGINT,
@@ -197,7 +199,7 @@ FIELDS TERMINATED BY ','
 STORED AS TEXTFILE
 
 
-[Pagev55]
+[Page 56]
 set hive.exec.dynamic.partition.mode=nonstrict;
 set hive.enforce.bucketing=true;
 
@@ -214,7 +216,7 @@ genre_ids
 FROM SONGS_<your_name>;
 
 
-[Page 63]
+[Page 64]
 CREATE TABLE SONGS_parquet_<your_name> (
 song_id	STRING,
 song_length BIGINT,
@@ -227,7 +229,7 @@ language STRING
 STORED AS PARQUET;
 
 
-[Page 65]
+[Page 66]
 EXPLAIN
 SELECT *
 FROM songs_<your_name> A
@@ -235,23 +237,23 @@ JOIN songs_info_<your_name> B
 ON A.song_id=B.song_id
 
 
-[Page 67]
+[Page 68]
 ANALYZE TABLE songs_<your_name> COMPUTE STATISTICS;
 DESCRIBE EXTENDED songs_<your_name>;
 
 
-[Page 86]
+[Page 87]
 INVALIDATE METADATA;
 INVALIDATE METADATA table_name;
 
 
-[Page 88]
+[Page 89]
 REFRESH;
 REFRESH table_name;
 REFRESH table_name PARTITION partition_name;
 
 
-[Page 89]
+[Page 90]
 EXPLAIN
 SELECT *
 FROM songs_<your_name> A
@@ -259,7 +261,7 @@ JOIN songs_info_<your_name> B
 ON A.song_id=B.song_id
 
 
-[Page 91]
+[Page 92]
 COMPUTE STATS table_name;
 
 COMPUTE INCREMENTAL STATS table_name;
@@ -270,9 +272,9 @@ SHOW TABLE STATS table_name;
 SHOW COLUMN STATS table_name;
 
 
-[Page 97]
+[Page 98]
 impala-shell –i quickstart:21000
 
 
-[Page 99]
+[Page 100]
 impala-shell –i quickstart:21000 -q "show databases;"
