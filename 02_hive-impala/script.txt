@@ -3,10 +3,11 @@ hdfs dfs -ls /tmp
 
 
 [Page 11, 12]
-hdfs dfs -put data/songs.csv  /tmp 
+# Put local data into hdfs
+hdfs dfs -put data/songs.csv  /tmp
 
 [Page 13]
-hdfs dfs -ls /tmp 
+hdfs dfs -ls /tmp
 
 
 [Page 22]
@@ -27,6 +28,7 @@ beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive -e "show databases;" --
 
 
 [Page 30]
+-- Create schema
 CREATE TABLE SONGS_<your_name> (
 song_id	STRING,
 song_length BIGINT,
@@ -72,9 +74,9 @@ create table SONGS_archived_<your_name> like SONGS_<your_name>;
 
 [Page 35]
 CREATE TABLE SONGS_select_<your_name> AS
-SELECT 
-song_id, 
-composer 
+SELECT
+song_id,
+composer
 FROM SONGS_<your_name>
 
 
@@ -130,10 +132,10 @@ STORED AS TEXTFILE;
 
 [Page 42]
 set hive.exec.dynamic.partition.mode=nonstrict;
-INSERT INTO SONGS_p_<your_name> 
+INSERT INTO SONGS_p_<your_name>
 PARTITION(genre_ids)
-SELECT 
-song_id,    
+SELECT
+song_id,
 song_length,
 artist_name,
 composer,
@@ -172,8 +174,8 @@ STORED AS TEXTFILE;
 set hive.enforce.bucketing=true;
 
 INSERT INTO TABLE SONGS_b_<your_name>
-SELECT 
-song_id,	
+SELECT
+song_id,
 song_length,
 genre_ids,
 artist_name,
@@ -203,10 +205,10 @@ STORED AS TEXTFILE
 set hive.exec.dynamic.partition.mode=nonstrict;
 set hive.enforce.bucketing=true;
 
-INSERT INTO SONGS_pb_<your_name> 
+INSERT INTO SONGS_pb_<your_name>
 PARTITION (genre_ids)
-SELECT 
-song_id,	
+SELECT
+song_id,
 song_length,
 artist_name,
 composer,
@@ -225,7 +227,7 @@ artist_name STRING,
 composer STRING,
 lyricist STRING,
 language STRING
-) 
+)
 STORED AS PARQUET;
 
 
