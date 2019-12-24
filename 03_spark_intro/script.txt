@@ -65,6 +65,17 @@ joinRDD = ageRDD.join(nationRDD)
 joinRDD.take(15)
 
 
+[page 53] Challenges
+raw_rdd = sc.textFile ("hdfs:///tmp/news.txt")
+res_rdd = (
+    raw_rdd.flatMap(lambda line: line.split(" "))
+           .map(lambda word: (word, 1))
+           .reduceByKey(lambda element_x_value, element_y_value: element_x_value + element_y_value)
+           .sortBy(lambda pair: pair[1], False)
+)
+res_rdd.take(5)
+
+
 [page 73]
 $ pyspark
 songs_df = spark.sql ("select * from songs")
@@ -260,6 +271,7 @@ df_demo.groupBy("date")\
 
 [page 110]
 df_demo.write.format("csv").option("header", True).save("/tmp/df_demo_han")
+
 $ hdfs dfs -ls /tmp/df_demo_han
 
 df_demo.write.format("parquet").mode("overwrite").saveAsTable("df_demo_han")
@@ -268,3 +280,53 @@ spark.sql("show tables").show()
 """
 
 table_2_df = spark.sql(table_2_query)
+
+
+[page 111] Challenge
+
+# Read from 2 hive tables as temp table (songs, song_info)
+song_df = spark.sql("select * from songs")
+info_df = spark.sql("select * from song_info")
+spark.sql("show tables").show()
+
+# Join dataframes to generate dataframe of Table 1
+joined_df = song_df.join(info_df, song_df["song_id"] == info_df["song_id"])
+table_1_df = joined_df.select("songs.song_id", expr("name as song_name"), "song_length", "language")
+table_1_df.write.saveAsTable("simple_song_info_han")
+
+# Grouping by language to generate dataframe of Table 2
+group_df = song_df.groupBy("language").avg("song_length")
+#group_df.printSchema()
+table_2_df = group_df.select("language", col("avg(song_length)").alias("avg_song_length"))
+table_2_df.write.saveAsTable("avg_song_length_language_han")
+
+# SQL statement
+song_df.createOrReplaceTempView("song_tb")
+info_df.createOrReplaceTempView("info_tb")
+
+table_1_query = """
+SELECT
+    stb.song_id,
+    name as song_name,
+    song_length,
+    language
+FROM song_tb stb
+JOIN info_tb itb
+ON stb.song_id = itb.song_id
+"""
+
+table_1_df = spark.sql(table_1_query)
+table_1_df.write.saveAsTable("simple_song_info_hane")
+
+table_2_query = """
+SELECT
+    language,
+    avg(song_length) as avg_song_length
+FROM song_tb
+GROUP BY language
+"""
+
+table_2_df = spark.sql(table_2_query)
+
+# Save to Hive
+
