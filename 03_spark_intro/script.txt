@@ -84,7 +84,7 @@ StructField("composer",    StringType()),
 StructField("lyricist",    StringType()),
 StructField("language",    StringType())]
 )
- 
+
 filePath = "/tmp/songs.csv"
 songsDF = spark.read.format("csv")\
 .schema(my_schema)\
@@ -135,7 +135,7 @@ composer_filter = col("composer").isNotNull()
 song_length_filter = col("song_length") < 120000
 genre_ids_filter = col("genre_ids") == "465"
 language_filter = col("language") == "3.0"
- 
+
 songs_bool = songsDF.withColumn(
 "is_favor_songs",
 composer_filter & song_length_filter & (language_filter | genre_ids_filter)
@@ -179,7 +179,7 @@ from pyspark.sql.functions import avg
 df_fill_null = songsDF.na.fill(300000, "song_length")
 fill_dict = {
 "composer": "no-composer",
-"song_length": songsDF0.select(avg("song_length")).first()[0]
+"song_length": songsDF.select(avg("song_length")).first()[0]
 }
 df_fill_null_with_dict = songsDF.na.fill(fill_dict)
 
