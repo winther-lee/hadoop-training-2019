@@ -1,0 +1,52 @@
+CREATE TABLE SONGS_4GB (
+song_id    STRING,
+song_length BIGINT,
+genre_ids STRING,
+artist_name STRING,
+composer STRING,
+lyricist STRING,
+language STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+LOAD DATA INPATH '/tmp/songs_4g.csv' INTO TABLE SONGS_4GB;
+
+
+CREATE TABLE SONGS_PARTITIONED_4GB (
+song_id    STRING,
+song_length BIGINT,
+artist_name STRING,
+composer STRING,
+lyricist STRING,
+language STRING
+)
+PARTITIONED BY (genre_ids STRING)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+INSERT INTO SONGS_PARTITIONED_4GB 
+PARTITION(genre_ids)
+SELECT 
+song_id,    
+song_length,
+artist_name,
+composer,
+lyricist,
+language,
+genre_ids
+FROM SONGS_4GB;
+
+
+CREATE TABLE SONGS_INFO(
+song_id    STRING,
+name STRING,
+ISRC STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+LOAD DATA INPATH '/tmp/song_info.csv' INTO TABLE SONGS_INFO;
