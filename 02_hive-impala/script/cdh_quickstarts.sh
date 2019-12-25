@@ -13,3 +13,7 @@ sudo docker import cloudera-quickstart-vm-5.13.0-0-beta-docker/cloudera-quicksta
 rm -rf cloudera-quickstart-vm-5.13.0-0-beta-docker*
 pwd=$(pwd)
 sudo docker run --name cloudera --hostname=quickstart.cloudera -v $pwd/mount_data:/data --privileged=true -t -i -d -p 8888:8888 -p 80:80  -p 10000:10000 -p 7180:7180 -p 21050:21050 -p 50070:50070 -p 50075:50075 -p 50010:50010 -p 50020:50020 -p 19888:19888 -p 8088:8088 -p 8020:8020 cdh_image:5.13.0 /usr/bin/docker-quickstart
+# cloudera manager is not enable by default. 
+# Execute the commands of following to enable cloudera manager.
+# cmd="/home/cloudera/cloudera-manager --express"
+# docker exec -it cloudera ${cmd}
