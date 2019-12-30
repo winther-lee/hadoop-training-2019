@@ -1,0 +1,25 @@
+version: "2"
+services:
+    cdh_5_13_0:
+        container_name: cloudera
+        image: semicolon1709/cdh5.13.0_spark2:v1.1
+        hostname: quickstart.cloudera
+        environment:
+            - PYSPARK_PYTHON=/opt/anaconda3/bin/python
+        privileged: true
+        volumes:
+            - ./data:/data
+            - ./script:/script
+        ports:
+            - "7180:7180"
+            - "8888:8888"
+            - "80:80"
+            - "10000:10000"
+            - "21050:21050"
+            - "50070:50070"
+            - "50075:50075"
+            - "50010:50010"
+            - "50020:50020"
+            - "19888:19888"
+            - "8088:8088"
+            - "8020:8020"
