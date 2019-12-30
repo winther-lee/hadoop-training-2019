@@ -2,13 +2,11 @@ version: "2"
 services:
     cdh_5_13_0:
         container_name: cloudera
-        image: semicolon1709/cdh5.13.0_spark2:v1.1
+        image: semicolon1709/cdh5.13.0:v1.0
         hostname: quickstart.cloudera
-        environment:
-            - PYSPARK_PYTHON=/opt/anaconda3/bin/python
         privileged: true
         volumes:
-            - ./data:/data
+            - ./data:/m_data
             - ./script:/script
         ports:
             - "7180:7180"
@@ -23,3 +21,4 @@ services:
             - "19888:19888"
             - "8088:8088"
             - "8020:8020"
+        command: "/usr/bin/docker-quickstart"
