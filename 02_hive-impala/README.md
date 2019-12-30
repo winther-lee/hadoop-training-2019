@@ -35,6 +35,11 @@ $ sudo docker exec cloudera sh /script/sample-table.sh
 $ sudo docker exec -it cloudera bash
 $ beeline -u jdbc:hive2://quickstart:10000 -n hive -p hive
 ```
+#### Impala-Shell:
+```sh
+$ sudo docker exec -it cloudera bash
+$ impala-shell -i quickstart:21000
+```
 #### Hue: 
 * URL: http://localhost:8888
 * account/password:  cloudera/cloudera
