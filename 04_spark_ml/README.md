@@ -42,7 +42,7 @@ spark 2.4.0 with python 3.7.4
 ```sh
 $ sudo docker exec -it cloudera bash
 $ su cloudera
-$ cd ~
+$ cd /04_spark_ml/
 $ pyspark2 --master local
 ```
 
