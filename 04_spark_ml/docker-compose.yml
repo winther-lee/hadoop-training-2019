@@ -1,0 +1,37 @@
+version: "2"
+services:
+    cdh_5_13_0:
+        container_name: cloudera
+        image: semicolon1709/cdh5.13.0_spark2.4.0:v1.0
+        hostname: quickstart.cloudera
+        environment:
+            - PYSPARK_PYTHON=/opt/anaconda3/bin/python
+            - PYSPARK_DRIVER_PYTHON=/opt/anaconda3/bin/jupyter
+            - PYSPARK_DRIVER_PYTHON_OPTS="notebook"
+        privileged: true
+        volumes:
+            - ./data:/data
+            - ./script:/script
+        ports:
+            - "7180:7180"
+            - "8888:8888"
+            - "80:80"
+            - "10000:10000"
+            - "21050:21050"
+            - "50070:50070"
+            - "50075:50075"
+            - "50010:50010"
+            - "50020:50020"
+            - "19888:19888"
+            - "8088:8088"
+            - "8020:8020"
+            - "4040:4040"
+            - "4041:4041"
+            - "4042:4042"
+            # for jupyter notebook
+            - "8000:8000"
+            - "8001:8001"
+            - "8002:8002"
+            - "8003:8003"
+            - "8004:8004"
+            - "8005:8005"
