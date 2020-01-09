@@ -16,3 +16,6 @@ sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-compose
 sudo docker run hello-world
 sudo docker-compose -version
 sudo systemctl enable docker
+wget https://doc-08-98-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/1qrmllsh8hciaiqhm4gfoj4bca24sftd/1578556800000/09781675821774192418/*/1eK7rrc_JgRB6oyQvncEhSPRFrVUJF_pb?e=download
+mv 1e* application_train.csv
+sudo apt-get install -y unzip
