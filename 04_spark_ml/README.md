@@ -11,7 +11,7 @@
 $ wget https://codeload.github.com/ts-training/hadoop-training-2019/zip/master
 $ unzip master
 $ mv application_train.csv /home/ubuntu/hadoop-training-2019-master/04_spark_ml/data/
-$ cd hadoop-training-2019-master/04_spark_ml
+$ cd hadoop-training-2019-master/04_spark_ml/data/classification
 $ sudo docker-compose up -d
 ```
 
