@@ -10,8 +10,7 @@ services:
             - PYSPARK_DRIVER_PYTHON_OPTS="notebook"
         privileged: true
         volumes:
-            - ./data:/data
-            - ./script:/script
+            - ../04_spark_ml:/04_spark_ml
         ports:
             - "7180:7180"
             - "8888:8888"
