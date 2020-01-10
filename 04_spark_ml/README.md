@@ -10,7 +10,7 @@
 ```sh
 $ wget https://codeload.github.com/ts-training/hadoop-training-2019/zip/master
 $ unzip master
-$ wget https://doc-0c-00-docs.googleusercontent.com/docs/securesc/84nag520djkk6fu8up36e0gkf5liu923/06d292fmtoac0ju08helnail709j2dje/1578643200000/09781675821774192418/09781675821774192418/1eK7rrc_JgRB6oyQvncEhSPRFrVUJF_pb?e=download&h=01370057456853972683&authuser=0&nonce=fccdepkg6drjk&user=09781675821774192418&hash=9j8j82d52ak9l8mosf72tj1sn7kdsber
+$ wget https://doc-08-98-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/0e34ltj9nb36tthmv86lqgeraqn8h79m/1578643200000/09781675821774192418/*/1eK7rrc_JgRB6oyQvncEhSPRFrVUJF_pb?e=download
 $ mv 1e* application_train.csv
 $ mv application_train.csv /home/ubuntu/hadoop-training-2019-master/04_spark_ml/data/classification
 $ cd hadoop-training-2019-master/04_spark_ml
