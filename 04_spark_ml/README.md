@@ -41,10 +41,9 @@ $ sudo docker logs cloudera
 spark 2.4.0 with python 3.7.4
 ```sh
 $ sudo docker exec -it cloudera bash
-$ sudo /opt/anaconda3/bin/pip install findspark
 $ su cloudera
 $ cd /04_spark_ml/
-$ pyspark2 --master local
+$ /opt/anaconda3/bin/jupyter notebook
 ```
 
 ##### Jupyter Notebook
