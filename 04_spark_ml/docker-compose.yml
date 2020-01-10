@@ -2,7 +2,7 @@ version: "2"
 services:
     cdh_5_13_0:
         container_name: cloudera
-        image: semicolon1709/cdh5.13.0_spark2.4.0:v1.0
+        image: semicolon1709/cdh5.13.0_spark2.4.0:v1.1
         hostname: quickstart.cloudera
         environment:
             - PYSPARK_PYTHON=/opt/anaconda3/bin/python3
