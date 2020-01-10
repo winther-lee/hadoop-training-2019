@@ -10,6 +10,8 @@
 ```sh
 $ wget https://codeload.github.com/ts-training/hadoop-training-2019/zip/master
 $ unzip master
+$ wget https://doc-0c-00-docs.googleusercontent.com/docs/securesc/84nag520djkk6fu8up36e0gkf5liu923/06d292fmtoac0ju08helnail709j2dje/1578643200000/09781675821774192418/09781675821774192418/1eK7rrc_JgRB6oyQvncEhSPRFrVUJF_pb?e=download&h=01370057456853972683&authuser=0&nonce=fccdepkg6drjk&user=09781675821774192418&hash=9j8j82d52ak9l8mosf72tj1sn7kdsber
+$ mv 1e* application_train.csv
 $ mv application_train.csv /home/ubuntu/hadoop-training-2019-master/04_spark_ml/data/classification
 $ cd hadoop-training-2019-master/04_spark_ml
 $ sudo docker-compose up -d
