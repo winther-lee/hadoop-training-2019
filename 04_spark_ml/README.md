@@ -8,6 +8,7 @@
 ## Installation
 ##### Step 1: Start the CDH Quickstarts Cluster and Download data
 First download data from https://www.kaggle.com/c/home-credit-default-risk/data
+
 Second Start the CDH Quickstarts Cluster 
 ```sh
 $ wget https://codeload.github.com/ts-training/hadoop-training-2019/zip/master
