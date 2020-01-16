@@ -6,12 +6,12 @@
 * Docker installed
 
 ## Installation
-##### Step 1: Start the CDH Quickstarts Cluster
+##### Step 1: Start the CDH Quickstarts Cluster and Download data
+First download data from https://www.kaggle.com/c/home-credit-default-risk/data
+Second Start the CDH Quickstarts Cluster 
 ```sh
 $ wget https://codeload.github.com/ts-training/hadoop-training-2019/zip/master
 $ unzip master
-$ wget https://doc-08-98-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/0e34ltj9nb36tthmv86lqgeraqn8h79m/1578643200000/09781675821774192418/*/1eK7rrc_JgRB6oyQvncEhSPRFrVUJF_pb?e=download
-$ mv 1e* application_train.csv
 $ mv application_train.csv /home/ubuntu/hadoop-training-2019-master/04_spark_ml/data/classification
 $ cd hadoop-training-2019-master/04_spark_ml
 $ sudo docker-compose up -d
